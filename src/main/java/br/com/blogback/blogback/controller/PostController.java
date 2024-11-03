@@ -56,9 +56,12 @@ public class PostController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<PostResponse> update(@PathVariable Long id, @RequestBody PostRequest request) {
+    public ResponseEntity<PostResponse> update(
+            @PathVariable Long id,
+            @ModelAttribute PostRequest request) {
         return postService.update(id, PostMapper.toPost(request))
                 .map(post -> ResponseEntity.ok(PostMapper.toPostResponse(post)))
                 .orElse(ResponseEntity.notFound().build());
     }
+
 }
