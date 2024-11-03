@@ -21,24 +21,23 @@ public class PostService {
     private final CategoryService categoryService;
 
     public Post save(Post post) {
-        log.info("Salvando novo Post: {}", post.getTitle());
         post.setCategories(this.findCategories(post.getCategories()));
         post.setCreatedAt(LocalDateTime.now());  // Certifique-se de definir a data de criação no primeiro salvamento
         return postRepository.save(post);
     }
 
     public List<Post> findAll() {
-        log.info("Buscando todos os posts.");
         return postRepository.findAll();
+    }
+    public List<Post> findByCategory(Long categoryId) {
+        return postRepository.findPostByCategories(List.of(Category.builder().id(categoryId).build()));
     }
 
     public Optional<Post> findById(Long id) {
-        log.info("Buscando Post pelo ID: {}", id);
         return postRepository.findById(id);
     }
 
     public Optional<Post> update(Long postId, Post updatePost) {
-        log.info("Atualizando Post com ID: {}", postId);
         Optional<Post> optPost = postRepository.findById(postId);
 
         if (optPost.isPresent()) {
@@ -58,24 +57,19 @@ public class PostService {
 
             // Atualizando imagem condicionalmente
             if (updatePost.getImage() != null) {
-                log.info("Atualizando imagem do Post ID: {}", postId);
                 post.setImage(updatePost.getImage());
             } else {
-                log.info("Nenhuma nova imagem fornecida para Post ID: {}", postId);
             }
 
             postRepository.save(post);
-            log.info("Post atualizado com sucesso: {}", postId);
             return Optional.of(post);
 
         } else {
-            log.warn("Post com ID: {} não encontrado para atualização.", postId);
             return Optional.empty();
         }
     }
 
     private List<Category> findCategories(List<Category> categories) {
-        log.info("Buscando categorias associadas ao Post.");
         List<Category> categoriesFound = new ArrayList<>();
         categories.forEach(category -> categoryService.findById(category.getId())
                 .ifPresentOrElse(

@@ -64,4 +64,12 @@ public class PostController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
+    @GetMapping("/search")
+    public ResponseEntity<List<PostResponse>> findByCategory(@RequestParam Long category) {
+        return ResponseEntity.ok(postService.findByCategory(category)
+                .stream()
+                .map(PostMapper::toPostResponse)
+                .toList());
+    }
+
 }
