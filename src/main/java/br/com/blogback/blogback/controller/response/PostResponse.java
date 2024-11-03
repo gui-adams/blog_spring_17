@@ -11,5 +11,5 @@ public record PostResponse(
         String slug,
         boolean published,
         String imagePath,
-        List<Long> categories
+        List <CategoryResponse> categories
 ) {}

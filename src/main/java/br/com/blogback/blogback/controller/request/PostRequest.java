@@ -8,4 +8,7 @@ public record PostRequest(
         String slug,
         boolean published,
         List<Long> categories
-) {}
+
+) {
+
+}
