@@ -47,4 +47,18 @@ public class PostController {
                 .map(PostMapper::toPostResponse)
                 .toList());
     }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<PostResponse> findById(@PathVariable Long id) {
+        return postService.findById(id)
+                .map(post -> ResponseEntity.ok(PostMapper.toPostResponse(post)))
+                .orElse(ResponseEntity.notFound().build());
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<PostResponse> update(@PathVariable Long id, @RequestBody PostRequest request) {
+        return postService.update(id, PostMapper.toPost(request))
+                .map(post -> ResponseEntity.ok(PostMapper.toPostResponse(post)))
+                .orElse(ResponseEntity.notFound().build());
+    }
 }

@@ -26,12 +26,8 @@ public class CategoryService {
         return categoryRepository.findById(id);
     }
 
-    // Adiciona o método findAllById
-    public List<Category> findAllById(List<Long> ids) {
-        return categoryRepository.findAllById(ids);
-    }
-
     public Category updateCategory(Category category) {
+        // Verifica se a categoria existe antes de atualizar
         if (categoryRepository.existsById(category.getId())) {
             return categoryRepository.save(category);
         } else {
