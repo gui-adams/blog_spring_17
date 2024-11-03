@@ -40,6 +40,8 @@ public class PostMapper {
                 .published(post.isPublished())
                 .imagePath(post.getImage())
                 .categories(categories)
+                .createdAt(post.getCreatedAt())
+                .updatedAt(post.getUpdatedAt())
                 .build();
     }
 }

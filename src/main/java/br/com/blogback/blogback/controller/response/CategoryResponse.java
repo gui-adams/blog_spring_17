@@ -4,5 +4,5 @@ import lombok.Builder;
 
 import java.time.LocalDateTime;
 @Builder
-public record CategoryResponse(Long id, String name, String slug, LocalDateTime createdAt, LocalDateTime updatedAt) {
+public record CategoryResponse(Long id, String name, String slug) {
 }

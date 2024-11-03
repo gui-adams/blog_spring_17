@@ -1,3 +1,5 @@
+# Diretórios e arquivos a serem ignorados
+src/main/resources/static/uploads/
 HELP.md
 target/
 !.mvn/wrapper/maven-wrapper.jar
