@@ -37,6 +37,10 @@ public class PostService {
         return postRepository.findById(id);
     }
 
+    public void delete (Long postId) {
+        postRepository.deleteById(postId);
+    }
+
     public Optional<Post> update(Long postId, Post updatePost) {
         Optional<Post> optPost = postRepository.findById(postId);
 
