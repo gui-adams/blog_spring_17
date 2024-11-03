@@ -9,8 +9,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import java.util.Optional;
 
 import java.util.List;
+
 
 @RestController
 @RequestMapping("/backblog/category")
@@ -41,6 +43,23 @@ public class CategoryController {
         return categoryService.findById(id)
                 .map(category -> ResponseEntity.ok(CategoryMapper.toCategoryResponse(category)))
                 .orElse(ResponseEntity.notFound().build());
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<CategoryResponse> updateCategory(
+            @PathVariable Long id,
+            @RequestBody CategoryRequest request) {
+
+        Optional<Category> existingCategoryOpt = categoryService.findById(id);
+        if (existingCategoryOpt.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+
+        Category updatedCategory = CategoryMapper.toCategory(request);
+        updatedCategory.setId(id); // Mantém o mesmo ID
+
+        Category savedCategory = categoryService.updateCategory(updatedCategory);
+        return ResponseEntity.ok(CategoryMapper.toCategoryResponse(savedCategory));
     }
 
     @DeleteMapping("/{id}")

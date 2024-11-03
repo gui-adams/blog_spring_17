@@ -11,21 +11,35 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 public class CategoryService {
-    private final CategoryRepository repository;
+
+    private final CategoryRepository categoryRepository;
 
     public List<Category> findAll() {
-        return repository.findAll();
+        return categoryRepository.findAll();
     }
 
     public Category saveCategory(Category category) {
-        return repository.save(category);
+        return categoryRepository.save(category);
     }
 
     public Optional<Category> findById(Long id) {
-        return repository.findById(id);
+        return categoryRepository.findById(id);
     }
 
-    public void deleteCategory(Long id){
-        repository.deleteById(id);
+    // Adiciona o método findAllById
+    public List<Category> findAllById(List<Long> ids) {
+        return categoryRepository.findAllById(ids);
+    }
+
+    public Category updateCategory(Category category) {
+        if (categoryRepository.existsById(category.getId())) {
+            return categoryRepository.save(category);
+        } else {
+            throw new IllegalArgumentException("Categoria não encontrada com o ID: " + category.getId());
+        }
+    }
+
+    public void deleteCategory(Long id) {
+        categoryRepository.deleteById(id);
     }
 }

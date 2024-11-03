@@ -12,6 +12,13 @@ spring:
     database-platform: org.hibernate.dialect.PostgreSQLDialect
     show-sql: true
 
-
   flyway:
     enabled: true
+
+  servlet:
+    multipart:
+      max-file-size: 15MB  # Definindo um limite superior para garantir que o upload funcione
+      max-request-size: 15MB  # Ajuste conforme necessário para acomodar arquivos grandes
+
+file:
+  upload-dir: /home/sw/Documentos/trabalho/blogback/src/main/resources/static/uploads
