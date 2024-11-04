@@ -1,9 +1,9 @@
-// UserMapper.java
 package br.com.blogback.blogback.mapper;
 
 import br.com.blogback.blogback.controller.request.UserRequest;
 import br.com.blogback.blogback.controller.response.UserResponse;
 import br.com.blogback.blogback.entity.User;
+import br.com.blogback.blogback.entity.UserRole;
 import lombok.experimental.UtilityClass;
 
 @UtilityClass
@@ -14,7 +14,7 @@ public class UserMapper {
                 .name(request.name())
                 .email(request.email())
                 .password(request.password())
-                .role(request.role())  // Mapeando o campo role
+                .role(UserRole.USER)  // Define o role como USER por padrão
                 .build();
     }
 

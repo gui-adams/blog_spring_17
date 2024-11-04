@@ -34,7 +34,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.POST, "/backblog/auth/login").permitAll()
                         .requestMatchers(HttpMethod.GET, "/backblog/post").permitAll()
                         .requestMatchers(HttpMethod.GET, "/backblog/post/search").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/backblog/auth/register").hasRole("ADMIN")  // Restrito ao ADMIN
+                        .requestMatchers(HttpMethod.POST, "/backblog/auth/register").permitAll()  // Deixa o register público
                         .anyRequest().authenticated()
                 )
                 //.addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)

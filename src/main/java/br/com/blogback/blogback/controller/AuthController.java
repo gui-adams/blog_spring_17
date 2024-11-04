@@ -6,6 +6,7 @@ import br.com.blogback.blogback.controller.request.UserRequest;
 import br.com.blogback.blogback.controller.response.LoginResponse;
 import br.com.blogback.blogback.controller.response.UserResponse;
 import br.com.blogback.blogback.entity.User;
+import br.com.blogback.blogback.entity.UserRole;
 import br.com.blogback.blogback.mapper.UserMapper;
 import br.com.blogback.blogback.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -30,9 +31,12 @@ public class AuthController {
 
     @PostMapping("/register")
     public ResponseEntity<UserResponse> register(@RequestBody UserRequest request) {
-        User savedUser = userService.save(UserMapper.toUser(request));
+        User newUser = UserMapper.toUser(request);
+        newUser.setRole(UserRole.USER);  // Define o role como USER
+        User savedUser = userService.save(newUser);
         return ResponseEntity.status(HttpStatus.CREATED).body(UserMapper.toUserResponse(savedUser));
     }
+
 
     @PostMapping("/login")
     public ResponseEntity<LoginResponse> login(@RequestBody LoginRequest request) {
