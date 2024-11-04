@@ -22,3 +22,7 @@ spring:
 
 file:
   upload-dir: /home/sw/Documentos/trabalho/blogback/src/main/resources/static/uploads
+
+backblog:
+  security:
+    secret: "bUMefF3qnEl7x+zByQl,xCK49lIoTVcpXiXllcMpb2b0=,@windows99!Secure"
