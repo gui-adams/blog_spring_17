@@ -1,5 +1,10 @@
-# Diretórios e arquivos a serem ignorados
+# Ignorar o arquivo de ambiente
+.env
+
+# Ignorar o diretório de uploads (gerado localmente)
 src/main/resources/static/uploads/
+
+# Outros diretórios e arquivos a serem ignorados
 HELP.md
 target/
 !.mvn/wrapper/maven-wrapper.jar

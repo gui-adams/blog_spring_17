@@ -17,8 +17,8 @@ spring:
 
   servlet:
     multipart:
-      max-file-size: 15MB  # Definindo um limite superior para garantir que o upload funcione
-      max-request-size: 15MB  # Ajuste conforme necessário para acomodar arquivos grandes
+      max-file-size: 15MB
+      max-request-size: 15MB
 
 file:
   upload-dir: /home/sw/Documentos/trabalho/blogback/src/main/resources/static/uploads
@@ -26,3 +26,8 @@ file:
 backblog:
   security:
     secret: "bUMefF3qnEl7x+zByQl,xCK49lIoTVcpXiXllcMpb2b0=,@windows99!Secure"
+
+cloudinary:
+  cloud_name: "dfrjs8zto"
+  api_key: "911266359985394"
+  api_secret: "do1A1-58QyO9iZx84CCt7R5mPlk"

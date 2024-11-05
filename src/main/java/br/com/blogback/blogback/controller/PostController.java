@@ -4,7 +4,7 @@ import br.com.blogback.blogback.controller.request.PostRequest;
 import br.com.blogback.blogback.controller.response.PostResponse;
 import br.com.blogback.blogback.entity.Post;
 import br.com.blogback.blogback.mapper.PostMapper;
-import br.com.blogback.blogback.service.FileStorageService;
+import br.com.blogback.blogback.service.CloudinaryService;
 import br.com.blogback.blogback.service.PostService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -21,18 +21,18 @@ import java.util.Optional;
 public class PostController {
 
     private final PostService postService;
-    private final FileStorageService fileStorageService;
+    private final CloudinaryService cloudinaryService;  // Usar CloudinaryService para uploads
 
     @PostMapping
     public ResponseEntity<PostResponse> save(@ModelAttribute PostRequest request) {
         try {
-            String imagePath = null;
+            String imageUrl = null;
             if (request.image() != null && !request.image().isEmpty()) {
-                imagePath = fileStorageService.saveFile(request.image());
+                imageUrl = cloudinaryService.uploadImage(request.image());
             }
 
             Post post = PostMapper.toPost(request);
-            post.setImage(imagePath);
+            post.setImage(imageUrl);  // Define a URL pública da imagem
             Post savedPost = postService.save(post);
             return ResponseEntity.status(HttpStatus.CREATED).body(PostMapper.toPostResponse(savedPost));
         } catch (IOException e) {
@@ -59,9 +59,20 @@ public class PostController {
     public ResponseEntity<PostResponse> update(
             @PathVariable Long id,
             @ModelAttribute PostRequest request) {
-        return postService.update(id, PostMapper.toPost(request))
-                .map(post -> ResponseEntity.ok(PostMapper.toPostResponse(post)))
-                .orElse(ResponseEntity.notFound().build());
+        try {
+            String imageUrl = null;
+            if (request.image() != null && !request.image().isEmpty()) {
+                imageUrl = cloudinaryService.uploadImage(request.image());
+            }
+
+            Post postToUpdate = PostMapper.toPost(request);
+            postToUpdate.setImage(imageUrl);  // Define a URL pública da imagem se atualizada
+            return postService.update(id, postToUpdate)
+                    .map(post -> ResponseEntity.ok(PostMapper.toPostResponse(post)))
+                    .orElse(ResponseEntity.notFound().build());
+        } catch (IOException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
     }
 
     @GetMapping("/search")
@@ -73,9 +84,9 @@ public class PostController {
     }
 
     @DeleteMapping("{id}")
-    public ResponseEntity<Void> delete(@PathVariable Long id){
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
         Optional<Post> optPost = postService.findById(id);
-        if (optPost.isPresent()){
+        if (optPost.isPresent()) {
             postService.delete(id);
             return ResponseEntity.noContent().build();
         }

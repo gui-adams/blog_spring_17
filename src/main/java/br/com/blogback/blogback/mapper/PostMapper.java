@@ -35,7 +35,7 @@ public class PostMapper {
                 .toList();
 
         // Construir a URL completa para a imagem
-        String imagePath = (post.getImage() != null) ? BASE_IMAGE_URL + post.getImage() : null;
+        String imageUrl = post.getImage() != null ? "/backblog/images/" + post.getImage() : null;
 
         return PostResponse.builder()
                 .id(post.getId())
@@ -43,7 +43,7 @@ public class PostMapper {
                 .content(post.getContent())
                 .slug(post.getSlug())
                 .published(post.isPublished())
-                .imagePath(imagePath)  // Use a URL completa para a imagem
+                .imagePath(imageUrl)  // Use a URL completa para a imagem
                 .categories(categories)
                 .createdAt(post.getCreatedAt())
                 .updatedAt(post.getUpdatedAt())
