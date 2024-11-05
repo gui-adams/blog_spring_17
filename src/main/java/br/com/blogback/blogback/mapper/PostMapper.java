@@ -43,7 +43,7 @@ public class PostMapper {
                 .content(post.getContent())
                 .slug(post.getSlug())
                 .published(post.isPublished())
-                .imagePath(imageUrl)  // Use a URL completa para a imagem
+                .imagePath(post.getImage())  // Use a URL completa para a imagem
                 .categories(categories)
                 .createdAt(post.getCreatedAt())
                 .updatedAt(post.getUpdatedAt())

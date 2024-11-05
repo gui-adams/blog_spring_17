@@ -2,6 +2,7 @@ package br.com.blogback.blogback.controller;
 
 import br.com.blogback.blogback.config.TokenService;
 import br.com.blogback.blogback.controller.request.LoginRequest;
+import br.com.blogback.blogback.controller.request.PasswordUpdateRequest;
 import br.com.blogback.blogback.controller.request.UserRequest;
 import br.com.blogback.blogback.controller.response.LoginResponse;
 import br.com.blogback.blogback.controller.response.UserResponse;
@@ -15,6 +16,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -25,6 +28,7 @@ public class AuthController {
     private final UserService userService;
     private final AuthenticationManager authenticationManager;
     private final TokenService tokenService;
+    private final PasswordEncoder passwordEncoder;
 
     @PostMapping("/register")
     public ResponseEntity<UserResponse> register(@RequestBody UserRequest request) {
@@ -33,7 +37,6 @@ public class AuthController {
         User savedUser = userService.save(newUser);
         return ResponseEntity.status(HttpStatus.CREATED).body(UserMapper.toUserResponse(savedUser));
     }
-
 
     @PostMapping("/login")
     public ResponseEntity<LoginResponse> login(@RequestBody LoginRequest request) {
@@ -50,13 +53,26 @@ public class AuthController {
 
     @GetMapping("/validate-token")
     public ResponseEntity<Void> validateToken(@RequestHeader("Authorization") String authorizationHeader) {
-        // Extrai o token do cabeçalho Authorization
         String token = authorizationHeader.replace("Bearer ", "");
         boolean isValid = tokenService.verifyToken(token).isPresent();
-
-        // Retorna 200 se o token for válido, 401 se for inválido
         return isValid ? ResponseEntity.ok().build() : ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
     }
 
+    // Endpoint para atualizar a senha do usuário autenticado
+    @PutMapping("/update-password")
+    public ResponseEntity<String> updatePassword(
+            @AuthenticationPrincipal User currentUser,
+            @RequestBody PasswordUpdateRequest passwordUpdateRequest) {
 
+        // Verifica se a senha antiga está correta
+        if (!passwordEncoder.matches(passwordUpdateRequest.oldPassword(), currentUser.getPassword())) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Senha atual incorreta.");
+        }
+
+        // Atualiza a senha para a nova
+        currentUser.setPassword(passwordEncoder.encode(passwordUpdateRequest.newPassword()));
+        userService.save(currentUser);
+
+        return ResponseEntity.ok("Senha atualizada com sucesso.");
+    }
 }

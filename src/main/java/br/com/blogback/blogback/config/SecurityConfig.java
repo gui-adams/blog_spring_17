@@ -34,7 +34,10 @@ public class SecurityConfig {
                         .dispatcherTypeMatchers(DispatcherType.ERROR).permitAll()
                         .requestMatchers(HttpMethod.POST, "/backblog/auth/login").permitAll()
                         .requestMatchers(HttpMethod.GET, "/backblog/post").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/backblog/post/{id}").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/backblog/category").permitAll()
                         .requestMatchers(HttpMethod.GET, "/backblog/post/search").permitAll()
+                        .requestMatchers(HttpMethod.PUT, "/backblog/auth/update-password").authenticated()
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class);
