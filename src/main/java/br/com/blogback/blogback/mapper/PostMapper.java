@@ -12,6 +12,8 @@ import java.util.List;
 @UtilityClass
 public class PostMapper {
 
+    private static final String BASE_IMAGE_URL = "http://localhost:8080/images/";  // URL base para as imagens
+
     public static Post toPost(PostRequest request) {
         List<Category> categories = request.categories().stream()
                 .map(categoryId -> Category.builder().id(categoryId).build())
@@ -29,8 +31,11 @@ public class PostMapper {
     public static PostResponse toPostResponse(Post post) {
         List<CategoryResponse> categories = post.getCategories()
                 .stream()
-                .map(category -> CategoryMapper.toCategoryResponse(category))
+                .map(CategoryMapper::toCategoryResponse)
                 .toList();
+
+        // Construir a URL completa para a imagem
+        String imagePath = (post.getImage() != null) ? BASE_IMAGE_URL + post.getImage() : null;
 
         return PostResponse.builder()
                 .id(post.getId())
@@ -38,7 +43,7 @@ public class PostMapper {
                 .content(post.getContent())
                 .slug(post.getSlug())
                 .published(post.isPublished())
-                .imagePath(post.getImage())
+                .imagePath(imagePath)  // Use a URL completa para a imagem
                 .categories(categories)
                 .createdAt(post.getCreatedAt())
                 .updatedAt(post.getUpdatedAt())
