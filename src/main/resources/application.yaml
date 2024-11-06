@@ -3,7 +3,7 @@ spring:
     name: backblog
 
   datasource:
-    url: jdbc:postgresql://localhost:5432/backblog
+    url: jdbc:postgresql://92.112.184.76:5432/backblog
     username: postgres
     password: windows99
     driver-class-name: org.postgresql.Driver
