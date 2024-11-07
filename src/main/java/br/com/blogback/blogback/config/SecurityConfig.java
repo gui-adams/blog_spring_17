@@ -41,7 +41,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.GET, "/backblog/category").permitAll()
                         .requestMatchers(HttpMethod.GET, "/backblog/post/search").permitAll()
                         .requestMatchers(HttpMethod.PUT, "/backblog/auth/update-password").authenticated()
-                        .anyRequest().permitAll()
+                        .anyRequest().authenticated()
                 )
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class);
 
