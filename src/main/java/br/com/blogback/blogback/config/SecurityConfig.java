@@ -1,6 +1,6 @@
 package br.com.blogback.blogback.config;
 
-import jakarta.servlet.DispatcherType;
+import br.com.blogback.blogback.service.CustomUserDetailsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -9,6 +9,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -24,21 +25,23 @@ public class SecurityConfig {
     private final SecurityFilter securityFilter;
     private final CorsConfigurationSource corsConfigurationSource;
 
+    private CustomUserDetailsService userDetailsService;
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                .csrf(csrf -> csrf.disable())  // Desabilita CSRF para APIs
+                .csrf(AbstractHttpConfigurer::disable)  // Desabilita CSRF para APIs
                 .cors(cors -> cors.configurationSource(corsConfigurationSource)) // Configura o CORS
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authorize -> authorize
-                        .dispatcherTypeMatchers(DispatcherType.ERROR).permitAll()
                         .requestMatchers(HttpMethod.POST, "/backblog/auth/login").permitAll()
                         .requestMatchers(HttpMethod.GET, "/backblog/post").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/backblog/validate-token").permitAll()
                         .requestMatchers(HttpMethod.GET, "/backblog/post/{id}").permitAll()
                         .requestMatchers(HttpMethod.GET, "/backblog/category").permitAll()
                         .requestMatchers(HttpMethod.GET, "/backblog/post/search").permitAll()
                         .requestMatchers(HttpMethod.PUT, "/backblog/auth/update-password").authenticated()
-                        .anyRequest().authenticated()
+                        .anyRequest().permitAll()
                 )
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class);
 
