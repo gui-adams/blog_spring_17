@@ -39,7 +39,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.GET, "/backblog/validate-token").permitAll()
                         .requestMatchers(HttpMethod.GET, "/backblog/post/{id}").permitAll()
                         .requestMatchers(HttpMethod.GET, "/backblog/category").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/backblog/category/search").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/backblog/post/search").permitAll()
                         .requestMatchers(HttpMethod.PUT, "/backblog/auth/update-password").authenticated()
                         .anyRequest().authenticated()
                 )
