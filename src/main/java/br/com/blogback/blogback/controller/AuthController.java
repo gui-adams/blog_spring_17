@@ -41,7 +41,7 @@ public class AuthController {
     @PostMapping("/login")
     public ResponseEntity<ResponseTokenDTO> login(@RequestBody LoginRequest request) {
         User user = (User) userRepository.findByEmail(request.email()).orElseThrow(() -> new RuntimeException("User not found"));
-        if(passwordEncoder.matches(request.password(), user.getPassword())) {
+        if (passwordEncoder.matches(request.password(), user.getPassword())) {
             String token = tokenService.generateToken(user);
             return ResponseEntity.ok(new ResponseTokenDTO(token, user.getName()));
         }
@@ -66,10 +66,11 @@ public class AuthController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Senha atual incorreta.");
         }
 
-        // Atualiza a senha para a nova
+        // Codifica e salva a nova senha
         currentUser.setPassword(passwordEncoder.encode(passwordUpdateRequest.newPassword()));
-        userService.save(currentUser);
+        userRepository.save(currentUser);
 
         return ResponseEntity.ok("Senha atualizada com sucesso.");
     }
 }
+
