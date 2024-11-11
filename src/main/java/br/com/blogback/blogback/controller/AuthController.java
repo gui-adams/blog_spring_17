@@ -1,5 +1,6 @@
 package br.com.blogback.blogback.controller;
 
+import br.com.blogback.blogback.config.JWTUserData;
 import br.com.blogback.blogback.config.TokenService;
 import br.com.blogback.blogback.controller.request.LoginRequest;
 import br.com.blogback.blogback.controller.request.PasswordUpdateRequest;
@@ -50,9 +51,14 @@ public class AuthController {
 
     @GetMapping("/validate-token")
     public ResponseEntity<Void> validateToken(@RequestHeader("Authorization") String authorizationHeader) {
+        if (authorizationHeader == null || !authorizationHeader.startsWith("Bearer ")) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+
         String token = authorizationHeader.replace("Bearer ", "");
-        String isValid = tokenService.validateToken(token);
-        return isValid != null ? ResponseEntity.ok().build() : ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        JWTUserData userData = tokenService.validateToken(token);
+
+        return userData != null ? ResponseEntity.ok().build() : ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
     }
 
     // Endpoint para atualizar a senha do usuário autenticado
