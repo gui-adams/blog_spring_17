@@ -33,6 +33,3 @@ Contato
 Autor: Guilherme Adams
 
 E-mail: guilherme.adams@live.com
-
-Repositório: 
-
