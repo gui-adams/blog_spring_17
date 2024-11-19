@@ -28,6 +28,6 @@ backblog:
     secret: ""
 
 cloudinary:
-  cloud_name: "dfrjs8zto"
-  api_key: "911266359985394"
-  api_secret: "do1A1-58QyO9iZx84CCt7R5mPlk"
+  cloud_name: ""
+  api_key: ""
+  api_secret: ""
