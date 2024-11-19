@@ -27,3 +27,12 @@ Requisitos
 Java 17 ou superior.
 Maven instalado.
 Banco de dados PostgreSQL configurado.
+
+Contato
+
+Autor: Guilherme Adams
+
+E-mail: guilherme.adams@live.com
+
+Repositório: 
+
