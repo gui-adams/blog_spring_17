@@ -1,15 +1,15 @@
 spring:
   application:
-    name: backblog
+    name: 
 
   datasource:
-    url: jdbc:postgresql://92.112.184.76:5432/backblog
-    username: postgres
-    password: windows99
+    url: 
+    username: 
+    password: 
     driver-class-name: org.postgresql.Driver
 
   jpa:
-    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    database-platform: 
     show-sql: true
 
   flyway:
@@ -21,11 +21,11 @@ spring:
       max-request-size: 15MB
 
 file:
-  upload-dir: /home/sw/Documentos/trabalho/blogback/src/main/resources/static/uploads
+  upload-dir: 
 
 backblog:
   security:
-    secret: "bUMefF3qnEl7x+zByQl,xCK49lIoTVcpXiXllcMpb2b0=,@windows99!Secure"
+    secret: ""
 
 cloudinary:
   cloud_name: "dfrjs8zto"
